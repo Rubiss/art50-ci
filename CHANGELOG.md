@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.3.0 — 2026-07-24
+
+### Added
+
+- A root-level composite GitHub Action that installs its lockfile-pinned
+  JavaScript runtime from the tagged source, verifies the platform-specific
+  C2PA native archive against a release-pinned SHA-256 digest, runs declared
+  checks in any-language repositories, and uploads JSON, HTML, screenshot, and
+  provenance evidence
+  before returning the CLI's result.
+- Action inputs for configuration, output, artifact retention, optional
+  Chromium installation, and newline-delimited exact private-origin grants.
+- Action outputs for the CLI exit code, report directory, and GitHub artifact
+  identifier, URL, and digest.
+- Input- and filesystem-boundary tests plus deterministic pass/fail action
+  smoke jobs in an isolated non-Node consumer workspace.
+
+The initial composite action supports GitHub-hosted Linux runners. It requires
+a new or empty repository-relative report directory, does not need npm
+authentication, and does not modify the caller's package manifest or lockfile.
+
 ## 0.2.0 — 2026-07-24
 
 ### Changed

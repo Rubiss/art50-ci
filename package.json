@@ -1,6 +1,6 @@
 {
   "name": "art50-ci",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Regression-test declared AI disclosures and C2PA provenance in the delivered experience.",
   "type": "module",
   "license": "MIT",

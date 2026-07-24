@@ -1,0 +1,23 @@
+version: 1
+
+project:
+  name: composite-action-fixture
+
+output:
+  directory: artifacts/unused
+  screenshots: false
+
+surfaces:
+  - id: local-disclosure
+    name: Deterministic local disclosure
+    kind: website
+    target: ./surface.html
+    disclosures:
+      - id: ai-notice
+        selector: "[data-ai-disclosure]"
+        expectedText: "You are interacting with an AI system"
+        match: contains
+        visible: true
+        inViewport: true
+        unobstructed: true
+        accessible: true

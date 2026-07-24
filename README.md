@@ -16,7 +16,7 @@ Article 50 and the Code of Practice do not require C2PA by name. This preview
 supports C2PA as one configurable metadata implementation; it does not provide
 complete Article 50(2) marking or detection coverage.
 
-> **Status:** `v0.2.0` technical preview. Configuration and report schemas may
+> **Status:** `v0.3.0` technical preview. Configuration and report schemas may
 > change before `v1.0`. Report and provenance evidence documents currently use
 > `schemaVersion: 2`; configuration remains `version: 1`.
 
@@ -66,11 +66,21 @@ Requirements:
 - Node.js 22 or newer
 - Chromium installed through Playwright for browser checks
 
-Install the versioned GitHub release and run a real disclosure check against
-the art50-ci production site:
+Add the action to any GitHub repository—Node project or not—and retain the
+evidence automatically:
+
+```yaml
+- uses: actions/checkout@v6
+- uses: Rubiss/art50-ci@v0.3.0
+  with:
+    config: .art50-ci.yml
+```
+
+For a local run, install the versioned GitHub release and check the art50-ci
+production site:
 
 ```bash
-npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.2.0/art50-ci-0.2.0.tgz
+npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.3.0/art50-ci-0.3.0.tgz
 npx playwright install chromium
 npx art50-ci verify https://art50-ci.rubiss89.chatgpt.site --selector '[data-product-boundary]' --text 'No legal compliance verdicts.'
 ```
@@ -324,23 +334,35 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v6
+      - name: Check delivered AI transparency controls
+        uses: Rubiss/art50-ci@v0.3.0
         with:
-          node-version: 22
-          cache: npm
-
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npx art50-ci audit --output ./artifacts/art50
-
-      - name: Upload evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: art50-ci-report
-          path: artifacts/art50
-          if-no-files-found: warn
+          config: .art50-ci.yml
+          output: artifacts/art50
+          artifact-name: art50-ci-report
           retention-days: 7
+```
+
+The action currently supports GitHub-hosted Linux runners. It installs and
+builds its JavaScript runtime from the tagged, lockfile-pinned source under
+`GITHUB_ACTION_PATH`, verifies the platform-specific C2PA native archive
+against a release-pinned SHA-256 digest, and does not change the caller's
+`package.json`, lockfile, or dependency tree. The output must be a new or empty
+repository-relative directory, preventing unrelated caller files from being
+included in the evidence artifact.
+It installs Chromium by default, uploads evidence before returning the CLI's
+`0`, `1`, or `2` status, and needs only `contents: read`. Security-sensitive
+workflows can pin the action to the full release commit SHA instead of a tag.
+
+For an already-provisioned Playwright runner, set `install-browser: "false"`.
+Pass exact private origins as newline-delimited values only after trusted
+review:
+
+```yaml
+with:
+  config: checks/.art50-ci.yml
+  private-origins: |
+    https://preview.internal.example
 ```
 
 Do not expose preview credentials to workflows that execute code from

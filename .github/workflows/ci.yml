@@ -17,11 +17,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: npm
@@ -30,3 +30,80 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run check
       - run: npm pack --dry-run
+
+  action-smoke:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          path: action-source
+
+      - name: Prepare a non-Node consumer workspace
+        shell: bash
+        run: |
+          cp -R action-source/tests/fixtures/action-consumer consumer
+          test ! -e package.json
+          test ! -e package-lock.json
+
+      - name: Run the isolated composite action
+        id: passing
+        uses: ./action-source
+        with:
+          config: consumer/pass.yml
+          output: artifacts/action-pass
+          artifact-name: art50-ci-action-pass
+          retention-days: "1"
+
+      - name: Verify schema-v2 passing evidence
+        shell: bash
+        env:
+          REPORT_DIRECTORY: ${{ steps.passing.outputs.report-directory }}
+          ARTIFACT_ID: ${{ steps.passing.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.passing.outputs.artifact-digest }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, readdirSync } from "node:fs";
+          import path from "node:path";
+
+          const directory = process.env.REPORT_DIRECTORY;
+          if (!directory) throw new Error("Missing report directory output.");
+          const reportName = readdirSync(directory).find((name) => name.endsWith(".json"));
+          if (!reportName) throw new Error("The action produced no aggregate JSON report.");
+          const report = JSON.parse(readFileSync(path.join(directory, reportName), "utf8"));
+          if (report.schemaVersion !== 2 || report.passed !== true) {
+            throw new Error("The action report was not a passing schema-v2 document.");
+          }
+          if (!process.env.ARTIFACT_ID || !/^[0-9a-f]{64}$/u.test(process.env.ARTIFACT_DIGEST ?? "")) {
+            throw new Error("The action did not expose a retained artifact ID and digest.");
+          }
+          NODE
+
+      - name: Run an intentionally failing assertion
+        id: failing
+        continue-on-error: true
+        uses: ./action-source
+        with:
+          config: consumer/fail.yml
+          output: artifacts/action-fail
+          artifact-name: art50-ci-action-fail
+          retention-days: "1"
+          install-browser: "false"
+
+      - name: Verify evidence was retained before exit 1
+        if: ${{ always() }}
+        shell: bash
+        env:
+          STEP_OUTCOME: ${{ steps.failing.outcome }}
+          EXIT_CODE: ${{ steps.failing.outputs.exit-code }}
+          REPORT_DIRECTORY: ${{ steps.failing.outputs.report-directory }}
+          ARTIFACT_ID: ${{ steps.failing.outputs.artifact-id }}
+        run: |
+          test "$STEP_OUTCOME" = "failure"
+          test "$EXIT_CODE" = "1"
+          test -n "$ARTIFACT_ID"
+          test -n "$REPORT_DIRECTORY"
+          test -d "$REPORT_DIRECTORY"
+          test ! -e package.json
+          test ! -e package-lock.json

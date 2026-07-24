@@ -1,0 +1,112 @@
+name: art50-ci AI transparency checks
+description: Run declared AI-disclosure and C2PA delivery checks and retain inspectable evidence.
+author: Rubiss
+
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  config:
+    description: Repository-relative path to the art50-ci configuration.
+    required: false
+    default: .art50-ci.yml
+  output:
+    description: Repository-relative directory for JSON, HTML, screenshot, and provenance evidence.
+    required: false
+    default: artifacts/art50
+  artifact-name:
+    description: Name of the uploaded GitHub Actions evidence artifact.
+    required: false
+    default: art50-ci-report
+  retention-days:
+    description: Number of days GitHub should retain the evidence artifact (1-90).
+    required: false
+    default: "7"
+  install-browser:
+    description: Install the action's pinned Chromium build and Linux dependencies.
+    required: false
+    default: "true"
+  private-origins:
+    description: Optional newline-delimited exact private origins requested by the configuration.
+    required: false
+    default: ""
+
+outputs:
+  exit-code:
+    description: art50-ci exit code (0 pass, 1 failed assertions, 2 execution/configuration error).
+    value: ${{ steps.audit.outputs.exit-code }}
+  report-directory:
+    description: Repository-relative report directory.
+    value: ${{ inputs.output }}
+  artifact-id:
+    description: GitHub artifact identifier, when evidence was uploaded.
+    value: ${{ steps.evidence.outputs.artifact-id }}
+  artifact-url:
+    description: Authenticated URL for the uploaded evidence artifact.
+    value: ${{ steps.evidence.outputs.artifact-url }}
+  artifact-digest:
+    description: SHA-256 digest reported by GitHub for the uploaded artifact.
+    value: ${{ steps.evidence.outputs.artifact-digest }}
+
+runs:
+  using: composite
+  steps:
+    - name: Use Node.js 22
+      uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+      with:
+        node-version: "22"
+
+    - name: Validate action inputs
+      id: validate
+      shell: bash
+      env:
+        ART50_CONFIG: ${{ inputs.config }}
+        ART50_OUTPUT: ${{ inputs.output }}
+        ART50_ARTIFACT_NAME: ${{ inputs.artifact-name }}
+        ART50_RETENTION_DAYS: ${{ inputs.retention-days }}
+        ART50_INSTALL_BROWSER: ${{ inputs.install-browser }}
+        ART50_PRIVATE_ORIGINS: ${{ inputs.private-origins }}
+        ART50_RUNNER_ENVIRONMENT: ${{ runner.environment }}
+      run: node "$GITHUB_ACTION_PATH/scripts/validate-action-inputs.mjs"
+
+    - name: Install the tagged action runtime
+      shell: bash
+      env:
+        ART50_INSTALL_BROWSER: ${{ inputs.install-browser }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/install-action-runtime.sh"
+
+    - name: Run declared checks
+      id: audit
+      shell: bash
+      env:
+        ART50_CONFIG: ${{ inputs.config }}
+        ART50_OUTPUT: ${{ inputs.output }}
+        ART50_PRIVATE_ORIGINS: ${{ inputs.private-origins }}
+      run: node "$GITHUB_ACTION_PATH/scripts/run-action.mjs"
+
+    - name: Upload evidence
+      id: evidence
+      if: ${{ always() && steps.audit.outputs.report-safe == 'true' }}
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.output }}
+        if-no-files-found: error
+        retention-days: ${{ inputs.retention-days }}
+        include-hidden-files: true
+
+    - name: Summarize result
+      if: ${{ always() }}
+      shell: bash
+      env:
+        ART50_EXIT_CODE: ${{ steps.audit.outputs.exit-code }}
+        ART50_ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/summarize-action.sh"
+
+    - name: Return the audit status
+      if: ${{ always() }}
+      shell: bash
+      env:
+        ART50_EXIT_CODE: ${{ steps.audit.outputs.exit-code }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/return-action-status.sh"
