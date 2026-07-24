@@ -12,7 +12,7 @@ provenance:
   - id: public-test-card-delivery
     name: Public test card from source to delivered bytes
     source: ./assets/c2pa-source.png
-    delivered: https://raw.githubusercontent.com/Rubiss/art50-ci/main/examples/c2pa-delivery/assets/c2pa-delivered.png
+    delivered: https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered.png
     requireManifest: true
     requireEmbedded: true
     requireSourceManifestInDeliveredChain: true

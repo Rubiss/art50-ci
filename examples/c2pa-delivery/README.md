@@ -9,9 +9,11 @@ All three PNG files render the same test card:
 - `assets/c2pa-delivered-stripped.png` contains the same visible pixels without
   a C2PA manifest.
 
-`pass.yml` compares the local signed source with the signed bytes served from
-GitHub. `stripped-fail.yml` compares that source with the manifest-free
-delivery and is expected to exit with status 1.
+`pass.yml` compares the local signed source with signed bytes served from an
+immutable Git commit on GitHub. `stripped-fail.yml` compares that source with
+the manifest-free delivery stand-in and is expected to exit with status 1.
+The stand-in was generated from the same unsigned pixel data; it was not
+created by editing the signed delivered file.
 
 ## Reproduce
 
@@ -37,7 +39,12 @@ The assets are signed with the public test credentials in
 `tests/fixtures/certs`, originally published under the MIT License by
 `contentauth/c2pa-js`. The key is public, the signer is not a production
 identity, and these fixtures must never be used as trusted production
-credentials.
+credentials. The source manifest's `trainedAlgorithmicMedia` value is
+synthetic test data, not a factual or trust claim about the image.
+
+Regenerating the fixtures changes their manifest labels and checksums. A
+maintainer must publish the refreshed assets and repin the immutable delivery
+URLs before treating the public configs as reproducible again.
 
 The passing result demonstrates embedded-manifest inspection and ancestry for
 these exact bytes. It is not a signer-trust determination, authenticity
