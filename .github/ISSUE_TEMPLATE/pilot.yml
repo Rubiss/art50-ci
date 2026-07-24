@@ -1,36 +1,26 @@
-name: Design-partner pilot
-description: Ask about configuring art50-ci on a real product or delivery pipeline.
-title: "[pilot] "
+name: Implementation fit check
+description: Check whether one art50-ci release gate fits your pipeline—no payment or private details at this step.
+title: "[fit] "
 labels:
   - pilot
 body:
   - type: markdown
     attributes:
       value: |
-        Do not post credentials, private URLs, personal data, or confidential legal analysis. A maintainer can arrange a private channel after confirming fit.
+        This public first step should take under a minute.
+
+        Select the first control you want tested. Do not post product URLs, customer media, credentials, personal data, repository details, or confidential legal analysis.
+
+        A maintainer will reply with fit or no-fit before requesting details. If it fits, the technical intake moves to a private channel. No payment or repository access is requested at this step.
   - type: dropdown
     id: surface
     attributes:
-      label: What would you like to test?
+      label: Which first release check should we evaluate?
       options:
         - Browser-based AI interaction disclosure
         - Visible AI-generated or manipulated content label
         - Source manifest label in the delivered C2PA chain
-        - A combination of these
-    validations:
-      required: true
-  - type: textarea
-    id: current
-    attributes:
-      label: Current delivery path
-      description: Describe the framework, CI provider, and public surface or asset type without sharing secrets.
-    validations:
-      required: true
-  - type: textarea
-    id: outcome
-    attributes:
-      label: Useful outcome
-      description: What evidence or regression would make a pilot worthwhile?
+        - A combination or not sure yet
     validations:
       required: true
   - type: checkboxes
@@ -38,7 +28,7 @@ body:
     attributes:
       label: Authority and boundary
       options:
-        - label: I am authorized to request technical testing for this product.
+        - label: I am authorized to discuss technical testing for this product.
           required: true
-        - label: I understand the pilot is technical implementation, not legal advice or certification.
+        - label: I understand this is technical implementation, not legal advice or certification.
           required: true

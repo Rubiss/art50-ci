@@ -88,10 +88,13 @@ and lock files alone, and uploads JSON, HTML, and screenshot evidence as the
 `art50-ci-report` artifact.
 
 Want this installed and maintained for a real product?
-[Request the €500 fixed implementation](https://github.com/Rubiss/art50-ci/issues/new?template=pilot.yml):
+[Check implementation fit](https://github.com/Rubiss/art50-ci/issues/new?template=pilot.yml)
+for the €500 fixed implementation:
 up to five declared surfaces or assets, one GitHub Actions workflow, the first
 accepted evidence report, a remediation walkthrough, and 30 days of scheduled
-runs. No payment is required to apply.
+runs. The public fit check takes under a minute and requests no product URLs,
+media, repository access, or payment. If it fits, detailed intake moves to a
+private channel.
 
 ## Why this exists
 
