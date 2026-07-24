@@ -65,22 +65,28 @@ Requirements:
 - Node.js 22 or newer
 - Chromium installed through Playwright for browser checks
 
-From npm:
-
-```bash
-npm install --save-dev art50-ci
-npx playwright install chromium
-npx art50-ci init
-npx art50-ci audit
-```
-
-Until the npm package is published, install the versioned GitHub release:
+Install the versioned GitHub release and run a real disclosure check against
+the art50-ci production site:
 
 ```bash
 npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.1.0/art50-ci-0.1.0.tgz
 npx playwright install chromium
+npx art50-ci verify https://art50-ci.rubiss89.chatgpt.site --selector '[data-product-boundary]' --text 'No legal compliance verdicts.'
+```
+
+That command writes inspectable JSON, HTML, and screenshot evidence. To
+configure repeatable checks for your own product:
+
+```bash
 npx art50-ci init
+# Edit the generated target, selectors, text, and provenance expectations.
 npx art50-ci audit
+```
+
+After the npm package is published, the install command becomes:
+
+```bash
+npm install --save-dev art50-ci
 ```
 
 The process exits with `0` when every declared assertion passes, `1` when an
