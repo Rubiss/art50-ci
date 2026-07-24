@@ -136,6 +136,69 @@ surfaces:
     expect(html).toContain("Result boundary");
   });
 
+  it("retains a structured failure when screenshot evidence cannot be written", async () => {
+    const blockedOutputDirectory = await mkdtemp(
+      path.join(outputDirectory, "screenshot-failure-"),
+    );
+    await writeFile(
+      path.join(blockedOutputDirectory, "screenshots"),
+      "This file deliberately blocks creation of the screenshot directory.",
+      "utf8",
+    );
+    const config = parseConfigText(`
+version: 1
+project:
+  name: screenshot-write-failure-test
+surfaces:
+  - id: local-assistant
+    target: ${JSON.stringify(fixturePath)}
+    disclosures:
+      - id: notice
+        selector: "[data-ai-disclosure]"
+        expectedText: "interacting with an AI system"
+`);
+
+    const report = await runAudit(config, {
+      baseDirectory: testDirectory,
+      outputDirectory: blockedOutputDirectory,
+      mode: "audit",
+    });
+    const written = await writeReports(report, blockedOutputDirectory, {
+      baseDirectory: testDirectory,
+    });
+
+    expect(report).toMatchObject({
+      passed: false,
+      summary: {
+        totalSurfaces: 1,
+        passedSurfaces: 0,
+        failedSurfaces: 1,
+        totalChecks: 1,
+        passedChecks: 1,
+        failedChecks: 0,
+        totalFailures: 1,
+      },
+    });
+    expect(report.surfaces[0]).toMatchObject({
+      screenshotPath: null,
+      screenshotSha256: null,
+      failures: [
+        expect.objectContaining({
+          code: "SCREENSHOT_FAILED",
+        }),
+      ],
+      checks: [expect.objectContaining({ passed: true })],
+    });
+    expect(existsSync(written.jsonPath)).toBe(true);
+    expect(existsSync(written.htmlPath)).toBe(true);
+    const jsonText = await readFile(written.jsonPath, "utf8");
+    const htmlText = await readFile(written.htmlPath, "utf8");
+    expect(jsonText).toContain('"SCREENSHOT_FAILED"');
+    expect(htmlText).toContain("SCREENSHOT_FAILED");
+    expect(jsonText).not.toContain(blockedOutputDirectory);
+    expect(htmlText).not.toContain(blockedOutputDirectory);
+  });
+
   it("persists portable reports without local paths or private markers", async () => {
     const privateMarker = "ART50_PRIVATE_REPORT_MARKER";
     const configDirectory = path.join(outputDirectory, privateMarker);

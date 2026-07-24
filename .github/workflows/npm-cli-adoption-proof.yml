@@ -1,0 +1,133 @@
+name: Published CLI adoption proof
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  clean-repository-adoption:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22"
+
+      - name: Adopt the published CLI in a clean repository
+        id: adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          started_at="$(date +%s)"
+          mkdir consumer
+          cd consumer
+          test ! -e package.json
+          test ! -e package-lock.json
+          git init --quiet
+          npm init --yes
+          npm install --save-dev art50-ci@0.3.0
+          npx --no-install playwright install --with-deps chromium
+
+          cat > disclosure.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>Clean consumer fixture</title>
+            </head>
+            <body>
+              <main>
+                <p data-ai-disclosure aria-label="AI interaction notice">
+                  You are interacting with an AI system.
+                </p>
+              </main>
+            </body>
+          </html>
+          HTML
+
+          cat > .art50-ci.yml <<'YAML'
+          version: 1
+          project:
+            name: clean-repository-adoption
+          surfaces:
+            - id: local-disclosure
+              target: disclosure.html
+              disclosures:
+                - id: notice
+                  selector: "[data-ai-disclosure]"
+                  expectedText: "interacting with an AI system"
+                  accessibleName: "AI interaction notice"
+          YAML
+
+          npx --no-install art50-ci audit
+          finished_at="$(date +%s)"
+          elapsed_seconds="$((finished_at - started_at))"
+          test "$elapsed_seconds" -lt 600
+          echo "elapsed_seconds=$elapsed_seconds" >> "$GITHUB_OUTPUT"
+
+      - name: Verify the retained published-package evidence
+        shell: bash
+        env:
+          ELAPSED_SECONDS: ${{ steps.adoption.outputs.elapsed_seconds }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { createHash } from "node:crypto";
+          import { existsSync, readFileSync, readdirSync } from "node:fs";
+          import path from "node:path";
+
+          const directory = "consumer/.art50-ci/reports";
+          const reportName = readdirSync(directory).find((name) => name.endsWith(".json"));
+          if (!reportName) throw new Error("The published CLI produced no JSON report.");
+          const report = JSON.parse(readFileSync(path.join(directory, reportName), "utf8"));
+          const surface = report.surfaces?.[0];
+          const screenshotPath = path.join(directory, surface?.screenshotPath ?? "");
+          const screenshotDigest = existsSync(screenshotPath)
+            ? createHash("sha256").update(readFileSync(screenshotPath)).digest("hex")
+            : null;
+          if (
+            report.schemaVersion !== 2 ||
+            report.tool?.name !== "art50-ci" ||
+            report.tool?.version !== "0.3.0" ||
+            report.passed !== true ||
+            report.summary?.totalSurfaces !== 1 ||
+            report.summary?.passedSurfaces !== 1 ||
+            report.summary?.totalChecks !== 1 ||
+            report.summary?.passedChecks !== 1 ||
+            surface?.surfaceId !== "local-disclosure" ||
+            surface?.checks?.[0]?.disclosureId !== "notice" ||
+            surface?.checks?.[0]?.passed !== true ||
+            !/^[a-f0-9]{64}$/u.test(surface?.pageContentSha256 ?? "") ||
+            !/^[a-f0-9]{64}$/u.test(surface?.screenshotSha256 ?? "") ||
+            screenshotDigest !== surface?.screenshotSha256 ||
+            !Number.isInteger(Number(process.env.ELAPSED_SECONDS)) ||
+            Number(process.env.ELAPSED_SECONDS) >= 600
+          ) {
+            throw new Error("The clean-repository adoption proof was incomplete.");
+          }
+          NODE
+
+      - name: Publish the measured result
+        shell: bash
+        env:
+          ELAPSED_SECONDS: ${{ steps.adoption.outputs.elapsed_seconds }}
+        run: |
+          {
+            echo "## Published CLI clean-repository adoption"
+            echo
+            echo "- Package: \`art50-ci@0.3.0\` from npm"
+            echo "- Result: PASS"
+            echo "- Install, Chromium setup, configuration, run, and evidence: ${ELAPSED_SECONDS} seconds"
+            echo "- Threshold: under 600 seconds"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload adoption evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: npm-cli-clean-adoption-v0.3.0
+          path: consumer/.art50-ci/reports
+          if-no-files-found: error
+          retention-days: 1
