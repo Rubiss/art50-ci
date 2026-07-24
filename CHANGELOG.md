@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- A browser obstruction demonstration, reproducible with the published v0.3.0
+  CLI, that compares broken and fixed cookie-overlay fixtures and retains
+  matching JSON, HTML, screenshots, and hashes.
+- End-to-end coverage of the built CLI across the browser failure matrix plus
+  a deterministic screenshot-storage failure.
+- A clean-repository adoption workflow that installs the published npm package,
+  configures one declared check, runs it, validates its evidence, and enforces
+  a ten-minute ceiling.
+
 ## 0.3.0 — 2026-07-24
 
 ### Added

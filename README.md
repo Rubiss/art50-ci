@@ -22,6 +22,7 @@ complete Article 50(2) marking or detection coverage.
 
 **Get started:** [GitHub Marketplace](https://github.com/marketplace/actions/art50-ci-ai-transparency-checks)
 · [npm CLI 0.3.0](https://www.npmjs.com/package/art50-ci/v/0.3.0)
+· [30-second fail → fix → pass demo](https://art50-ci.rubiss89.chatgpt.site/demo)
 · [five-minute browser builder](https://art50-ci.rubiss89.chatgpt.site/#try)
 
 ## Start here
@@ -42,6 +43,13 @@ For C2PA delivery checks, inspect the
 [manifest-stripped expected failure](examples/evidence/c2pa-delivery-stripped-v0.3.0.html).
 They were generated with the exact v0.3.0 release and public, untrusted test
 signing material.
+
+For a browser regression, run the
+[cookie-overlay obstruction fixture](examples/browser-obstruction-demo) or
+use its
+[two-click fail → fix → pass replay](https://art50-ci.rubiss89.chatgpt.site/demo).
+The linked JSON, HTML, screenshots, and hashes identify tool version v0.3.0
+and are reproducible with the published package.
 
 For a repeatable GitHub check, add these two files. This exact example passes
 against the public art50-ci site; then replace the target, selector, and text

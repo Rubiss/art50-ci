@@ -57,7 +57,9 @@ afterAll(async () => {
   }
 });
 
-describe("runAudit", () => {
+// Hosted runners execute several Chromium-heavy files in parallel, so browser
+// startup legitimately exceeds Vitest's 5-second unit-test default.
+describe("runAudit", { timeout: 30_000 }, () => {
   it("checks disclosures, records failures, and writes JSON and HTML evidence", async () => {
     const config = parseConfigText(`
 version: 1
