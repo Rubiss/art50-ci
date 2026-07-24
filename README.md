@@ -20,6 +20,67 @@ complete Article 50(2) marking or detection coverage.
 > change before `v1.0`. Report and provenance evidence documents currently use
 > `schemaVersion: 2`; configuration remains `version: 1`.
 
+## Start here
+
+For a one-off local check, use the
+[five-minute browser builder](https://art50-ci.rubiss89.chatgpt.site/#try).
+It assembles a pinned command without submitting or storing the URL, selector,
+or expected text.
+
+For a repeatable GitHub check, add these two files. This exact example passes
+against the public art50-ci site; then replace the target, selector, and text
+with the disclosure your team selected.
+
+`.art50-ci.yml`
+
+```yaml
+version: 1
+
+project:
+  name: first-art50-ci-check
+
+surfaces:
+  - id: public-ai-disclosure
+    kind: website
+    target: https://art50-ci.rubiss89.chatgpt.site
+    disclosures:
+      - id: disclosure
+        selector: '[data-product-boundary]'
+        expectedText: No legal compliance verdicts.
+```
+
+`.github/workflows/art50-ci.yml`
+
+```yaml
+name: AI transparency regression
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  disclosure-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: Rubiss/art50-ci@v0.3.0
+        with:
+          config: .art50-ci.yml
+```
+
+The Action installs its own runtime and Chromium, leaves the caller's package
+and lock files alone, and uploads JSON, HTML, and screenshot evidence as the
+`art50-ci-report` artifact.
+
+Want this installed and maintained for a real product?
+[Request the €500 fixed implementation](https://github.com/Rubiss/art50-ci/issues/new?template=pilot.yml):
+up to five declared surfaces or assets, one GitHub Actions workflow, the first
+accepted evidence report, a remediation walkthrough, and 30 days of scheduled
+runs. No payment is required to apply.
+
 ## Why this exists
 
 A disclosure can pass design review and disappear in production. A cookie
@@ -59,22 +120,12 @@ Official starting points:
 Every `PASS` has a deliberately narrow meaning: the configured technical
 condition was observed against the tested target at that time.
 
-## Quick start
+## Local CLI
 
 Requirements:
 
 - Node.js 22 or newer
 - Chromium installed through Playwright for browser checks
-
-Add the action to any GitHub repository—Node project or not—and retain the
-evidence automatically:
-
-```yaml
-- uses: actions/checkout@v6
-- uses: Rubiss/art50-ci@v0.3.0
-  with:
-    config: .art50-ci.yml
-```
 
 For a local run, install the versioned GitHub release and check the art50-ci
 production site:
