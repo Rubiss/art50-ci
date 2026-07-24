@@ -1,0 +1,44 @@
+name: Design-partner pilot
+description: Ask about configuring art50-ci on a real product or delivery pipeline.
+title: "[pilot] "
+labels:
+  - pilot
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not post credentials, private URLs, personal data, or confidential legal analysis. A maintainer can arrange a private channel after confirming fit.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: What would you like to test?
+      options:
+        - Browser-based AI interaction disclosure
+        - Visible AI-generated or manipulated content label
+        - Source manifest label in the delivered C2PA chain
+        - A combination of these
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current delivery path
+      description: Describe the framework, CI provider, and public surface or asset type without sharing secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Useful outcome
+      description: What evidence or regression would make a pilot worthwhile?
+    validations:
+      required: true
+  - type: checkboxes
+    id: authority
+    attributes:
+      label: Authority and boundary
+      options:
+        - label: I am authorized to request technical testing for this product.
+          required: true
+        - label: I understand the pilot is technical implementation, not legal advice or certification.
+          required: true

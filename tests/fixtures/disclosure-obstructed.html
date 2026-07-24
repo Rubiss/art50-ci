@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Obstructed AI disclosure</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 40px; }
+      [data-ai-disclosure] { padding: 24px; background: #eef5ff; }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <p data-ai-disclosure aria-label="AI interaction notice">
+      You are interacting with an AI system.
+    </p>
+    <div class="overlay">Cookie overlay</div>
+  </body>
+</html>

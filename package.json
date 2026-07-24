@@ -1,0 +1,68 @@
+{
+  "name": "art50-ci",
+  "version": "0.1.0",
+  "description": "Regression-test declared AI disclosures and C2PA provenance in the delivered experience.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Rubiss",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rubiss/art50-ci.git"
+  },
+  "homepage": "https://github.com/Rubiss/art50-ci#readme",
+  "bugs": {
+    "url": "https://github.com/Rubiss/art50-ci/issues"
+  },
+  "keywords": [
+    "ai-act",
+    "article-50",
+    "c2pa",
+    "playwright",
+    "github-actions",
+    "transparency",
+    "transparency-regression"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "art50-ci": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "schema",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "test": "vitest run",
+    "check": "npm run build && npm test",
+    "test:watch": "vitest",
+    "prepare": "npm run build",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@contentauth/c2pa-node": "^0.6.4",
+    "@contentauth/c2pa-types": "^0.7.2",
+    "commander": "^14.0.0",
+    "playwright": "^1.54.1",
+    "yaml": "^2.8.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.32",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  }
+}

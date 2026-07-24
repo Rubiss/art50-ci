@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=../schema/art50-ci.schema.json
+version: 1
+
+project:
+  name: example-ai-product
+
+browser:
+  timeoutMs: 15000
+  waitUntil: domcontentloaded
+  viewport:
+    width: 1440
+    height: 1000
+
+output:
+  directory: ../.art50-ci/reports
+  screenshots: true
+  redactSelectors:
+    - 'input[type="password"]'
+    - '[data-sensitive]'
+
+surfaces:
+  - id: public-assistant
+    name: Public assistant
+    kind: chatbot
+    target: https://example.com/assistant
+    waitFor: '[data-app-ready]'
+    firstInteraction:
+      selector: '[data-testid="assistant-input"]'
+      action: focus
+    disclosures:
+      - id: ai-interaction-notice
+        description: Text selected by the product governance owner.
+        selector: '[data-ai-disclosure]'
+        expectedText: You are interacting with an AI system
+        match: contains
+        caseSensitive: false
+        visible: true
+        inViewport: true
+        unobstructed: true
+        accessible: true
+        accessibleName: AI interaction notice
+
+provenance:
+  - id: launch-poster
+    name: Launch poster from source to CDN
+    source: ./assets/launch-poster.png
+    delivered: https://cdn.example.com/media/launch-poster.png
+    requireManifest: true
+    requireEmbedded: true
+    requireSourceManifestInDeliveredChain: true
+    failOnInvalid: true
+    expectedDigitalSourceType: http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia

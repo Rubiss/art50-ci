@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../schema/art50-ci.schema.json
+version: 1
+project:
+  name: example-ai-product
+
+output:
+  directory: ../.art50-ci/reports
+  screenshots: true
+
+surfaces:
+  - id: example-chat
+    name: Example chat surface
+    kind: chatbot
+    target: ../tests/fixtures/disclosure-pass.html
+    disclosures:
+      - id: interaction-disclosure
+        selector: "[data-ai-disclosure]"
+        expectedText: "You are interacting with an AI system"
+        match: contains
+        visible: true
