@@ -105,9 +105,11 @@ Read the exact
 then
 [Check monitored launch fit](https://github.com/Rubiss/art50-ci/issues/new?template=pilot.yml).
 The public check takes under a minute and requests no product URLs, media,
-repository access, private details, or payment. Fit is confirmed before any
-private access or payment request; unsupported targets receive a no-fit
-response.
+repository access, private details, or payment. A preliminary fit or no-fit
+response comes before any request for customer product, repository, or system
+access or payment. The submitter must opt in before a separate private GitHub
+scope repository is created, and final acceptance follows the sanitized
+private intake.
 
 ## Why this exists
 

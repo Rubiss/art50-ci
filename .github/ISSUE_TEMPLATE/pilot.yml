@@ -13,14 +13,16 @@ body:
 
         Select the first control you want tested. Do not post product URLs, customer media, credentials, personal data, repository details, or confidential legal analysis.
 
-        A maintainer will reply with fit or no-fit before requesting private details. Unsupported targets receive a no-fit response. If it fits, technical intake moves to a private channel. No private access or payment is requested before fit is confirmed.
+        A maintainer will reply with preliminary fit or no-fit before requesting private details. Preliminary fit means the selected check can fall within the offer; final acceptance follows a private technical intake. Unsupported targets receive a no-fit response.
+
+        If you want to continue after preliminary fit, reply **open private intake** in the public issue. No private GitHub scope repository is created and no invitation is sent until you opt in. That private repository is for sanitized scope records only—not credentials, payment data, customer media, product source code, or retained run evidence. No customer product, repository, or system access or payment is requested before the private scope is accepted.
   - type: dropdown
     id: surface
     attributes:
       label: Which first release check should we evaluate?
       options:
         - Browser-based AI interaction disclosure
-        - Visible AI-generated or manipulated content label
+        - On-page visible label beside AI-generated or manipulated content
         - Source manifest label in the delivered C2PA chain
         - A combination or not sure yet
     validations:
