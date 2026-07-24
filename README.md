@@ -27,6 +27,11 @@ For a one-off local check, use the
 It assembles a pinned command without submitting or storing the URL, selector,
 or expected text.
 
+For the governance-to-engineering handoff, read the
+[practical Article 50 AI disclosure CI guide](https://art50-ci.rubiss89.chatgpt.site/guides/article-50-ai-disclosure-ci).
+It shows what the runner can observe, what remains a human decision, and how
+to promote one declared expectation into GitHub Actions.
+
 For a repeatable GitHub check, add these two files. This exact example passes
 against the public art50-ci site; then replace the target, selector, and text
 with the disclosure your team selected.
