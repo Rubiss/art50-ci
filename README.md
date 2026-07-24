@@ -139,11 +139,11 @@ Requirements:
 - Node.js 22 or newer
 - Chromium installed through Playwright for browser checks
 
-For a local run, install the versioned GitHub release and check the art50-ci
+For a local run, install the published v0.3.0 package and check the art50-ci
 production site:
 
 ```bash
-npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.3.0/art50-ci-0.3.0.tgz
+npm install --save-dev art50-ci@0.3.0
 npx playwright install chromium
 npx art50-ci verify https://art50-ci.rubiss89.chatgpt.site --selector '[data-product-boundary]' --text 'No legal compliance verdicts.'
 ```
@@ -167,12 +167,9 @@ Inspect the released v0.3.0 C2PA proof:
 [passing JSON](examples/evidence/c2pa-delivery-v0.3.0.json),
 [expected-failure HTML](examples/evidence/c2pa-delivery-stripped-v0.3.0.html),
 and the [pinned configurations and test-only assets](examples/c2pa-delivery).
-
-After the npm package is published, the install command becomes:
-
-```bash
-npm install --save-dev art50-ci
-```
+The [C2PA delivery guide](https://art50-ci.rubiss89.chatgpt.site/guides/test-c2pa-content-credentials-cdn-github-actions)
+walks through the source-to-delivery check, public evidence, and GitHub Actions
+setup.
 
 The process exits with `0` when every declared assertion passes, `1` when an
 audit completes with failed assertions, and `2` for configuration or execution
