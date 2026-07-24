@@ -128,6 +128,8 @@ icons alone do not establish compliance.
 
 Official starting points:
 
+Regulatory context last reviewed: **24 July 2026**.
+
 - [Commission Article 50 guidelines](https://digital-strategy.ec.europa.eu/en/library/guidelines-transparency-obligations-providers-and-deployers-ai-systems)
 - [Article 50 in Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj)
 - [Code of Practice FAQ](https://digital-strategy.ec.europa.eu/en/faqs/code-practice-transparency-ai-generated-content)
