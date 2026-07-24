@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "tool": {
+    "name": "art50-ci",
+    "version": "0.2.0"
+  },
+  "runId": "2026-07-24T09-53-09-549Z-7694d480",
+  "mode": "audit",
+  "project": "art50-ci production site",
+  "configPath": "$CONFIG_DIR/live-site.yml",
+  "configSha256": "2025b4ef354a002d8ac4383c93a2feda6aaf5ec4efaa234fe847c61c736f97cd",
+  "resultMeaning": "PASS means only that the configured technical condition was observed at the recorded time. It is not a legal compliance conclusion or certification.",
+  "environment": {
+    "node": "v24.15.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "commitSha": "fd174f6144c7563a504ed659f387b3d0537d99a0"
+  },
+  "startedAt": "2026-07-24T09:53:09.549Z",
+  "finishedAt": "2026-07-24T09:53:11.309Z",
+  "durationMs": 1760,
+  "passed": true,
+  "summary": {
+    "totalSurfaces": 1,
+    "passedSurfaces": 1,
+    "failedSurfaces": 0,
+    "totalChecks": 1,
+    "passedChecks": 1,
+    "failedChecks": 0,
+    "totalProvenance": 0,
+    "passedProvenance": 0,
+    "failedProvenance": 0,
+    "totalFailures": 0
+  },
+  "surfaces": [
+    {
+      "surfaceId": "production-boundary",
+      "name": "Production result-boundary disclosure",
+      "kind": "website",
+      "target": "https://art50-ci.rubiss89.chatgpt.site/",
+      "resolvedTarget": "https://art50-ci.rubiss89.chatgpt.site/",
+      "finalUrl": "https://art50-ci.rubiss89.chatgpt.site/",
+      "httpStatus": 200,
+      "screenshotPath": null,
+      "screenshotSha256": null,
+      "pageContentSha256": "38ed331853ec8e4f3520486e7b9900d3f0351a708c80b373c48e5a428607f7af",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "firstInteraction": null,
+      "startedAt": "2026-07-24T09:53:09.610Z",
+      "finishedAt": "2026-07-24T09:53:11.269Z",
+      "durationMs": 1658,
+      "passed": true,
+      "checks": [
+        {
+          "disclosureId": "product-boundary",
+          "selector": "[data-product-boundary]",
+          "expectedText": "No legal compliance verdicts.",
+          "match": "contains",
+          "expectedVisible": true,
+          "contentSelector": null,
+          "observationPhase": "initial",
+          "matchedElements": 1,
+          "actualText": "No legal compliance verdicts. No customer-media uploads. No silent telemetry.",
+          "actualVisible": true,
+          "inViewport": true,
+          "unobstructed": true,
+          "coveredBy": null,
+          "accessible": true,
+          "accessibleName": "No legal compliance verdicts. No customer-media uploads. No silent telemetry.",
+          "contentMatched": null,
+          "passed": true,
+          "durationMs": 15,
+          "failures": []
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "provenance": []
+}

@@ -84,6 +84,11 @@ npx art50-ci init
 npx art50-ci audit
 ```
 
+Inspect a real screenshot-free run against the production site:
+[rendered HTML report](https://art50-ci.rubiss89.chatgpt.site/evidence/production-site-v0.2.0.html),
+[portable JSON](examples/evidence/production-site-v0.2.0.json), and the
+[configuration that produced it](examples/live-site.yml).
+
 After the npm package is published, the install command becomes:
 
 ```bash

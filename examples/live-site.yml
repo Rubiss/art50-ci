@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../schema/art50-ci.schema.json
+version: 1
+
+project:
+  name: art50-ci production site
+
+browser:
+  timeoutMs: 15000
+  waitUntil: domcontentloaded
+  viewport:
+    width: 1440
+    height: 1000
+
+output:
+  directory: ./evidence
+  screenshots: false
+
+surfaces:
+  - id: production-boundary
+    name: Production result-boundary disclosure
+    kind: website
+    target: https://art50-ci.rubiss89.chatgpt.site
+    waitFor: '[data-product-boundary]'
+    disclosures:
+      - id: product-boundary
+        selector: '[data-product-boundary]'
+        expectedText: No legal compliance verdicts.
+        match: contains
+        visible: true
+        inViewport: true
+        unobstructed: true
+        accessible: true
