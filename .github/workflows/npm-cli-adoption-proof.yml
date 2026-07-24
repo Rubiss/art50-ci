@@ -103,7 +103,7 @@ jobs:
             !/^[a-f0-9]{64}$/u.test(surface?.pageContentSha256 ?? "") ||
             !/^[a-f0-9]{64}$/u.test(surface?.screenshotSha256 ?? "") ||
             screenshotDigest !== surface?.screenshotSha256 ||
-            !Number.isInteger(Number(process.env.ELAPSED_SECONDS)) ||
+            !/^[1-9]\d*$/u.test(process.env.ELAPSED_SECONDS ?? "") ||
             Number(process.env.ELAPSED_SECONDS) >= 600
           ) {
             throw new Error("The clean-repository adoption proof was incomplete.");
@@ -131,3 +131,4 @@ jobs:
           path: consumer/.art50-ci/reports
           if-no-files-found: error
           retention-days: 1
+          include-hidden-files: true
