@@ -87,14 +87,23 @@ The Action installs its own runtime and Chromium, leaves the caller's package
 and lock files alone, and uploads JSON, HTML, and screenshot evidence as the
 `art50-ci-report` artifact.
 
-Want this installed and maintained for a real product?
-[Check implementation fit](https://github.com/Rubiss/art50-ci/issues/new?template=pilot.yml)
-for the €500 fixed implementation:
-up to five declared surfaces or assets, one GitHub Actions workflow, the first
-accepted evidence report, a remediation walkthrough, and 30 days of scheduled
-runs. The public fit check takes under a minute and requests no product URLs,
-media, repository access, or payment. If it fits, detailed intake moves to a
-private channel.
+The MIT-licensed software above remains free to install, use, and operate
+yourself. Teams that want someone accountable for launching the gate can buy
+the founding **€500 one-time, 30-day monitored release-gate implementation**.
+It covers one product, up to five declared checks, one GitHub Actions workflow,
+a reproducible pass-or-product-failure baseline delivery, handoff materials,
+and triage of up to three distinct failed-run causes during the monitoring
+period. Each browser disclosure assertion, optional first-interaction control,
+or C2PA provenance item counts as one check.
+
+Read the exact
+[implementation scope and boundaries](https://github.com/Rubiss/art50-ci/blob/main/IMPLEMENTATION.md),
+then
+[Check monitored launch fit](https://github.com/Rubiss/art50-ci/issues/new?template=pilot.yml).
+The public check takes under a minute and requests no product URLs, media,
+repository access, private details, or payment. Fit is confirmed before any
+private access or payment request; unsupported targets receive a no-fit
+response.
 
 ## Why this exists
 

@@ -1,5 +1,5 @@
-name: Implementation fit check
-description: Check whether one art50-ci release gate fits your pipeline—no payment or private details at this step.
+name: Monitored launch fit check
+description: Check whether the founding €500 monitored release-gate launch fits—no payment or private details at this step.
 title: "[fit] "
 labels:
   - pilot
@@ -7,11 +7,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        This public first step should take under a minute.
+        ## Monitored launch fit check
+
+        The art50-ci software remains free. This public, under-one-minute check is only for the optional €500 one-time, 30-day monitored release-gate launch described in [IMPLEMENTATION.md](https://github.com/Rubiss/art50-ci/blob/main/IMPLEMENTATION.md).
 
         Select the first control you want tested. Do not post product URLs, customer media, credentials, personal data, repository details, or confidential legal analysis.
 
-        A maintainer will reply with fit or no-fit before requesting details. If it fits, the technical intake moves to a private channel. No payment or repository access is requested at this step.
+        A maintainer will reply with fit or no-fit before requesting private details. Unsupported targets receive a no-fit response. If it fits, technical intake moves to a private channel. No private access or payment is requested before fit is confirmed.
   - type: dropdown
     id: surface
     attributes:
