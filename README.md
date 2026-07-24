@@ -16,8 +16,9 @@ Article 50 and the Code of Practice do not require C2PA by name. This preview
 supports C2PA as one configurable metadata implementation; it does not provide
 complete Article 50(2) marking or detection coverage.
 
-> **Status:** `v0.1.0` technical preview. Configuration and report schemas may
-> change before `v1.0`.
+> **Status:** `v0.2.0` technical preview. Configuration and report schemas may
+> change before `v1.0`. Report and provenance evidence documents currently use
+> `schemaVersion: 2`; configuration remains `version: 1`.
 
 ## Why this exists
 
@@ -69,7 +70,7 @@ Install the versioned GitHub release and run a real disclosure check against
 the art50-ci production site:
 
 ```bash
-npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.1.0/art50-ci-0.1.0.tgz
+npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.2.0/art50-ci-0.2.0.tgz
 npx playwright install chromium
 npx art50-ci verify https://art50-ci.rubiss89.chatgpt.site --selector '[data-product-boundary]' --text 'No legal compliance verdicts.'
 ```
@@ -92,6 +93,11 @@ npm install --save-dev art50-ci
 The process exits with `0` when every declared assertion passes, `1` when an
 audit completes with failed assertions, and `2` for configuration or execution
 errors.
+
+If you used `v0.1.0`, upgrade and regenerate any report artifacts before
+sharing them. Version 2 report documents replace absolute local targets with
+`$CONFIG_DIR/...` or `$LOCAL_FILE` and store screenshot and provenance
+references relative to the JSON document that contains them.
 
 ## Configuration
 
@@ -264,6 +270,31 @@ into the report bundle. Screenshots may still contain sensitive information;
 use `redactSelectors`, disable screenshots, and retain artifacts in
 access-controlled storage when appropriate.
 
+Persisted report and provenance paths are portable and privacy-minimised:
+targets inside the configuration directory use `$CONFIG_DIR/...`, other local
+targets use `$LOCAL_FILE`, and generated artifact references are relative to
+the document containing them. Runtime API results and CLI output paths remain
+absolute so local tooling can still open the generated files.
+
+`$CONFIG_DIR`, `$REPORT_DIR`, and `$LOCAL_FILE` are privacy placeholders, not
+filesystem paths to open directly. `$REPORT_DIR/...` may appear in sanitized
+diagnostic text. A relative `screenshotPath` or `evidencePath` is different:
+resolve it against the directory containing that JSON document.
+
+```json
+{
+  "schemaVersion": 2,
+  "configPath": "$CONFIG_DIR/.art50-ci.yml",
+  "surfaces": [{
+    "target": "$CONFIG_DIR/preview/index.html",
+    "screenshotPath": "screenshots/public-assistant-example.png"
+  }]
+}
+```
+
+See [CHANGELOG.md](CHANGELOG.md) for report-schema compatibility notes and the
+v0.1.0 privacy advisory.
+
 ## GitHub Actions
 
 ```yaml
@@ -284,11 +315,11 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm

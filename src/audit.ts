@@ -146,7 +146,7 @@ export interface ProvenanceAuditResult {
 }
 
 export interface AuditReport {
-  schemaVersion: 1;
+  schemaVersion: 2;
   tool: {
     name: string;
     version: string;
@@ -1262,7 +1262,7 @@ export async function runAudit(
   const provenanceFailures = provenance.flatMap((result) => result.failures);
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     tool: {
       name: TOOL_NAME,
       version: TOOL_VERSION,

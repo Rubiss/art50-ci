@@ -27,6 +27,7 @@ import {
   type NetworkPolicy,
 } from "./network-policy.js";
 import { redactUrlForReport, redactUrlsInText } from "./redact.js";
+import { persistedProvenanceEvidence } from "./report-privacy.js";
 
 const DEFAULT_MAX_BYTES = 50 * 1024 * 1024;
 const DEFAULT_TIMEOUT_MS = 20_000;
@@ -68,7 +69,7 @@ export interface ValidationStatusSummary {
 }
 
 export interface ProvenanceInspectionResult {
-  schemaVersion: 1;
+  schemaVersion: 2;
   id: string;
   target: string;
   resolvedTarget: string;
@@ -217,10 +218,23 @@ async function readLocalAsset(
   } else {
     filePath = path.resolve(baseDirectory, target);
   }
-  const [allowedRoot, resolvedFilePath] = await Promise.all([
-    realpath(baseDirectory),
-    realpath(filePath),
-  ]);
+  let allowedRoot: string;
+  let resolvedFilePath: string;
+  try {
+    [allowedRoot, resolvedFilePath] = await Promise.all([
+      realpath(baseDirectory),
+      realpath(filePath),
+    ]);
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code === "ENOENT") {
+      throw new Error("The provenance target file does not exist.");
+    }
+    if (code === "EACCES" || code === "EPERM") {
+      throw new Error("The provenance target file could not be accessed.");
+    }
+    throw new Error("The provenance target file could not be resolved.");
+  }
   const relative = path.relative(allowedRoot, resolvedFilePath);
   if (
     relative.startsWith(`..${path.sep}`) ||
@@ -231,7 +245,12 @@ async function readLocalAsset(
       "Provenance files must stay inside the configuration directory.",
     );
   }
-  const metadata = await stat(resolvedFilePath);
+  let metadata;
+  try {
+    metadata = await stat(resolvedFilePath);
+  } catch {
+    throw new Error("The provenance target file could not be inspected.");
+  }
   if (!metadata.isFile()) {
     throw new Error("The provenance target is not a regular file.");
   }
@@ -240,7 +259,12 @@ async function readLocalAsset(
       `Asset exceeds the ${maxBytes}-byte provenance inspection limit.`,
     );
   }
-  const buffer = await readFile(resolvedFilePath);
+  let buffer: Buffer;
+  try {
+    buffer = await readFile(resolvedFilePath);
+  } catch {
+    throw new Error("The provenance target file could not be read.");
+  }
   return {
     buffer,
     resolvedTarget: resolvedFilePath,
@@ -612,7 +636,7 @@ export async function inspectProvenance(
     `${safeIdentifier(options.id)}-${observedAt.replace(/[:.]/g, "-")}-${randomUUID().slice(0, 8)}.json`,
   );
   const result: ProvenanceInspectionResult = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     id: options.id,
     target: redactUrlForReport(options.target),
     resolvedTarget: redactUrlForReport(loaded.resolvedTarget),
@@ -636,6 +660,14 @@ export async function inspectProvenance(
     resultMeaning:
       "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee.",
   };
-  await writeFile(evidencePath, `${JSON.stringify(result, null, 2)}\n`, "utf8");
+  const persistedResult = persistedProvenanceEvidence(result, {
+    baseDirectory: path.resolve(options.baseDirectory),
+    documentDirectory: evidenceDirectory,
+  });
+  await writeFile(
+    evidencePath,
+    `${JSON.stringify(persistedResult, null, 2)}\n`,
+    "utf8",
+  );
   return result;
 }

@@ -218,7 +218,9 @@ program
       headed: options.headed ?? false,
       trustedPrivateOrigins: options.allowPrivateOrigin ?? [],
     });
-    const reports = await writeReports(report, outputDirectory);
+    const reports = await writeReports(report, outputDirectory, {
+      baseDirectory: loaded.baseDirectory,
+    });
     printResult(
       report.passed,
       report.summary.totalFailures,
@@ -332,7 +334,9 @@ program
       headed: options.headed ?? false,
       trustedPrivateOrigins: options.allowPrivateOrigin ?? [],
     });
-    const reports = await writeReports(report, outputDirectory);
+    const reports = await writeReports(report, outputDirectory, {
+      baseDirectory,
+    });
     printResult(
       report.passed,
       report.summary.totalFailures,

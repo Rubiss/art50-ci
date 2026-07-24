@@ -8,11 +8,15 @@ import type {
   ProvenanceFailure,
   SurfaceAuditResult,
 } from "./audit.js";
-import { sanitizeReportValue } from "./redact.js";
+import { persistedAuditReport } from "./report-privacy.js";
 
 export interface WrittenReports {
   jsonPath: string;
   htmlPath: string;
+}
+
+export interface WriteReportsOptions {
+  baseDirectory?: string;
 }
 
 function escapeHtml(value: unknown): string {
@@ -66,7 +70,10 @@ function renderSurface(
   reportDirectory: string,
 ): string {
   const screenshot = surface.screenshotPath
-    ? path.relative(reportDirectory, surface.screenshotPath).replaceAll("\\", "/")
+    ? (path.isAbsolute(surface.screenshotPath)
+        ? path.relative(reportDirectory, surface.screenshotPath)
+        : surface.screenshotPath
+      ).replaceAll("\\", "/")
     : null;
 
   return `<section class="surface">
@@ -270,22 +277,29 @@ export function renderHtmlReport(
 export async function writeReports(
   report: AuditReport,
   outputDirectory: string,
+  options: WriteReportsOptions = {},
 ): Promise<WrittenReports> {
   await mkdir(outputDirectory, { recursive: true });
   const basename = `${report.mode}-${report.runId}`;
   const jsonPath = path.join(outputDirectory, `${basename}.json`);
   const htmlPath = path.join(outputDirectory, `${basename}.html`);
-  const sanitizedReport = sanitizeReportValue(report);
+  const baseDirectory =
+    options.baseDirectory ??
+    (report.configPath ? path.dirname(report.configPath) : process.cwd());
+  const persistedReport = persistedAuditReport(report, {
+    baseDirectory,
+    reportDirectory: path.resolve(outputDirectory),
+  });
 
   await Promise.all([
     writeFile(
       jsonPath,
-      `${JSON.stringify(sanitizedReport, null, 2)}\n`,
+      `${JSON.stringify(persistedReport, null, 2)}\n`,
       "utf8",
     ),
     writeFile(
       htmlPath,
-      renderHtmlReport(sanitizedReport, outputDirectory),
+      renderHtmlReport(persistedReport, outputDirectory),
       "utf8",
     ),
   ]);

@@ -10,7 +10,7 @@ import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { Builder, LocalSigner } from "@contentauth/c2pa-node";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
@@ -140,7 +140,7 @@ beforeAll(async () => {
   const signer = LocalSigner.newSigner(certificate, privateKey, "es256");
   const sourceBuilder = Builder.withJson({
     claim_generator_info: [
-      { name: "art50-ci integration tests", version: "0.1.0" },
+      { name: "art50-ci integration tests", version: "0.2.0" },
     ],
     title: "generated.png",
     format: "image/png",
@@ -159,7 +159,7 @@ beforeAll(async () => {
 
   const deliveryBuilder = Builder.withJson({
     claim_generator_info: [
-      { name: "art50-ci integration tests", version: "0.1.0" },
+      { name: "art50-ci integration tests", version: "0.2.0" },
     ],
     title: "delivered.png",
     format: "image/png",
@@ -178,7 +178,7 @@ beforeAll(async () => {
 
   const decoyBuilder = Builder.withJson({
     claim_generator_info: [
-      { name: "art50-ci integration tests", version: "0.1.0" },
+      { name: "art50-ci integration tests", version: "0.2.0" },
     ],
     title: "decoy.png",
     format: "image/png",
@@ -356,6 +356,70 @@ describe("inspectProvenance", () => {
     expect(result.sha256).toMatch(/^[a-f0-9]{64}$/);
     expect(result.resultMeaning).toMatch(/not a legal compliance/i);
     await expect(access(result.evidencePath)).resolves.toBeUndefined();
+  });
+
+  it("persists direct local evidence without host paths", async () => {
+    const privateMarker = "PRIVATE_DIRECT_EVIDENCE_MARKER";
+    const baseDirectory = path.join(temporaryDirectory, privateMarker);
+    const assetPath = path.join(baseDirectory, "plain.png");
+    const evidenceDirectory = path.join(baseDirectory, "evidence");
+    await mkdir(baseDirectory, { recursive: true });
+    await writeFile(assetPath, onePixelPng);
+
+    const result = await inspectProvenance({
+      id: "portable-image",
+      target: pathToFileURL(assetPath).href,
+      baseDirectory,
+      evidenceDirectory,
+    });
+    const evidenceText = await readFile(result.evidencePath, "utf8");
+    const evidence = JSON.parse(evidenceText) as {
+      schemaVersion: number;
+      target: string;
+      resolvedTarget: string;
+      evidencePath: string;
+    };
+
+    expect(path.isAbsolute(result.evidencePath)).toBe(true);
+    expect(result.schemaVersion).toBe(2);
+    expect(evidence.schemaVersion).toBe(2);
+    expect(result.target).toContain(privateMarker);
+    expect(result.resolvedTarget).toContain(privateMarker);
+    expect(evidence.target).toBe("$CONFIG_DIR/plain.png");
+    expect(evidence.resolvedTarget).toBe("$CONFIG_DIR/plain.png");
+    expect(evidence.evidencePath).toMatch(
+      /^portable-image-.+\.json$/u,
+    );
+    await expect(
+      access(path.resolve(evidenceDirectory, evidence.evidencePath)),
+    ).resolves.toBeUndefined();
+    expect(evidenceText).not.toContain(privateMarker);
+    expect(evidenceText).not.toContain(baseDirectory);
+    expect(evidenceText).not.toMatch(/\bfile:\/\//iu);
+  });
+
+  it("reports missing local evidence without exposing its path", async () => {
+    const privateMarker = "PRIVATE_MISSING_EVIDENCE_MARKER";
+    const baseDirectory = path.join(temporaryDirectory, privateMarker);
+    const missingPath = path.join(baseDirectory, "missing.png");
+    await mkdir(baseDirectory, { recursive: true });
+
+    let failure: unknown;
+    try {
+      await inspectProvenance({
+        id: "missing-image",
+        target: missingPath,
+        baseDirectory,
+        evidenceDirectory: path.join(baseDirectory, "evidence"),
+      });
+    } catch (error) {
+      failure = error;
+    }
+
+    expect(failure).toBeInstanceOf(Error);
+    expect((failure as Error).message).toMatch(/does not exist/i);
+    expect((failure as Error).message).not.toContain(privateMarker);
+    expect((failure as Error).message).not.toContain(missingPath);
   });
 
   it("writes immutable evidence paths for repeated observations", async () => {

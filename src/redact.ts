@@ -6,6 +6,16 @@ const reportableProtocols = new Set([
   "file:",
 ]);
 
+function withoutTrailingPunctuation(value: string): [string, string] {
+  let candidate = value;
+  let trailing = "";
+  while (/[),.;\]}]$/u.test(candidate)) {
+    trailing = `${candidate.at(-1)}${trailing}`;
+    candidate = candidate.slice(0, -1);
+  }
+  return [candidate, trailing];
+}
+
 export function redactUrlForReport(value: string): string {
   try {
     const parsed = new URL(value);
@@ -26,12 +36,7 @@ export function redactUrlsInText(value: string): string {
   return value.replace(
     /\b(?:https?|wss?|file):\/\/[^\s"'<>]+/giu,
     (matched) => {
-    let candidate = matched;
-    let trailing = "";
-    while (/[),.;\]}]$/u.test(candidate)) {
-      trailing = `${candidate.at(-1)}${trailing}`;
-      candidate = candidate.slice(0, -1);
-    }
+      const [candidate, trailing] = withoutTrailingPunctuation(matched);
       return `${redactUrlForReport(candidate)}${trailing}`;
     },
   );
@@ -46,8 +51,8 @@ export function sanitizeReportValue<T>(value: T): T {
   }
   if (value && typeof value === "object") {
     return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [
-        key,
+      Object.entries(value).map(([entryKey, item]) => [
+        entryKey,
         sanitizeReportValue(item),
       ]),
     ) as T;
