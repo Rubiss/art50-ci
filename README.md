@@ -20,6 +20,10 @@ complete Article 50(2) marking or detection coverage.
 > change before `v1.0`. Report and provenance evidence documents currently use
 > `schemaVersion: 2`; configuration remains `version: 1`.
 
+**Get started:** [GitHub Marketplace](https://github.com/marketplace/actions/art50-ci-ai-transparency-checks)
+· [npm CLI 0.3.0](https://www.npmjs.com/package/art50-ci/v/0.3.0)
+· [five-minute browser builder](https://art50-ci.rubiss89.chatgpt.site/#try)
+
 ## Start here
 
 For a one-off local check, use the
