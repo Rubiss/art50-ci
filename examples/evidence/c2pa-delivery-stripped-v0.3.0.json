@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 2,
+  "tool": {
+    "name": "art50-ci",
+    "version": "0.3.0"
+  },
+  "runId": "2026-07-24T14-21-58-848Z-ee404419",
+  "mode": "audit",
+  "project": "C2PA stripped-delivery public proof",
+  "configPath": "$CONFIG_DIR/stripped-fail.yml",
+  "configSha256": "dda4de29479bdc65e3d507ae2fb948556e9adbbb6ae39fde3b12790fdc080b04",
+  "resultMeaning": "PASS means only that the configured technical condition was observed at the recorded time. It is not a legal compliance conclusion or certification.",
+  "environment": {
+    "node": "v24.15.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "commitSha": "07e31fd75166a8d3cf11d75ed5511de3c46d620d"
+  },
+  "startedAt": "2026-07-24T14:21:58.848Z",
+  "finishedAt": "2026-07-24T14:22:00.747Z",
+  "durationMs": 1899,
+  "passed": false,
+  "summary": {
+    "totalSurfaces": 0,
+    "passedSurfaces": 0,
+    "failedSurfaces": 0,
+    "totalChecks": 0,
+    "passedChecks": 0,
+    "failedChecks": 0,
+    "totalProvenance": 1,
+    "passedProvenance": 0,
+    "failedProvenance": 1,
+    "totalFailures": 2
+  },
+  "surfaces": [],
+  "provenance": [
+    {
+      "provenanceId": "public-test-card-stripped",
+      "name": "Public test card with delivery manifest stripped",
+      "source": {
+        "schemaVersion": 2,
+        "id": "public-test-card-stripped-source",
+        "target": "$CONFIG_DIR/assets/c2pa-source.png",
+        "resolvedTarget": "$CONFIG_DIR/assets/c2pa-source.png",
+        "sourceKind": "file",
+        "observedAt": "2026-07-24T14:21:58.853Z",
+        "mimeType": "image/png",
+        "bytes": 34242,
+        "sha256": "3d21ffe863fafa1920f21da5665058fc7b0ea4c263edf294422066f384242c6a",
+        "evidencePath": "provenance/public-test-card-stripped-source-2026-07-24T14-21-58-853Z-90dc8c43.json",
+        "c2pa": {
+          "manifestPresent": true,
+          "embedded": true,
+          "activeLabel": "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237",
+          "manifestLabels": [
+            "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+          ],
+          "manifestAncestryLabels": [
+            "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+          ],
+          "validationState": "Valid",
+          "validationStatuses": [
+            {
+              "code": "claimSignature.insideValidity",
+              "success": true,
+              "explanation": "claim signature valid"
+            },
+            {
+              "code": "claimSignature.validated",
+              "success": true,
+              "explanation": "claim signature valid"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.hash.data"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.thumbnail.claim"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.actions.v2"
+            },
+            {
+              "code": "assertion.dataHash.match",
+              "success": true,
+              "explanation": "data hash valid"
+            }
+          ],
+          "digitalSourceTypes": [
+            "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
+          ],
+          "inspectionError": null
+        },
+        "resultMeaning": "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee."
+      },
+      "delivered": {
+        "schemaVersion": 2,
+        "id": "public-test-card-stripped-delivered",
+        "target": "https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered-stripped.png",
+        "resolvedTarget": "https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered-stripped.png",
+        "sourceKind": "url",
+        "observedAt": "2026-07-24T14:22:00.745Z",
+        "mimeType": "image/png",
+        "bytes": 14735,
+        "sha256": "dadb42a86c03270ffc5cbd1c22d0aa7360fbf23befda8d13bb886925cd4ffcb5",
+        "evidencePath": "provenance/public-test-card-stripped-delivered-2026-07-24T14-22-00-745Z-7e8a411a.json",
+        "c2pa": {
+          "manifestPresent": false,
+          "embedded": null,
+          "activeLabel": null,
+          "manifestLabels": [],
+          "manifestAncestryLabels": [],
+          "validationState": null,
+          "validationStatuses": [],
+          "digitalSourceTypes": [],
+          "inspectionError": null
+        },
+        "resultMeaning": "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee."
+      },
+      "requireManifest": true,
+      "requireEmbedded": true,
+      "requireSourceManifestInDeliveredChain": true,
+      "failOnInvalid": true,
+      "expectedDigitalSourceType": null,
+      "activeLabelPreserved": null,
+      "passed": false,
+      "failures": [
+        {
+          "code": "MANIFEST_MISSING",
+          "message": "The configured C2PA manifest expectation was not observed in the inspected bytes.",
+          "provenanceId": "public-test-card-stripped",
+          "target": "delivered"
+        },
+        {
+          "code": "SOURCE_MANIFEST_NOT_IN_DELIVERED_CHAIN",
+          "message": "The source C2PA manifest was not observed in the delivered asset's manifest chain.",
+          "provenanceId": "public-test-card-stripped",
+          "target": "comparison"
+        }
+      ]
+    }
+  ]
+}

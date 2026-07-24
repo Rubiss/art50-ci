@@ -11,9 +11,9 @@ All three PNG files render the same test card:
 
 `pass.yml` compares the local signed source with signed bytes served from an
 immutable Git commit on GitHub. `stripped-fail.yml` compares that source with
-the manifest-free delivery stand-in and is expected to exit with status 1.
-The stand-in was generated from the same unsigned pixel data; it was not
-created by editing the signed delivered file.
+the manifest-free delivery control and is expected to exit with status 1.
+The generator creates that control by removing the delivered PNG's `caBX`
+C2PA chunk and verifies that the result equals the unsigned fixture bytes.
 
 ## Reproduce
 

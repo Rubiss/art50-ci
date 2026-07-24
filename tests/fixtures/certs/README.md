@@ -1,7 +1,7 @@
 # Test-only C2PA signing material
 
-These credentials are public test fixtures and must never be used outside the
-automated test suite.
+These credentials are public test/demo fixtures and must never be used for
+production signing or as a trusted identity.
 
 Source: `contentauth/c2pa-js` commit
 `6adfe33f7f49689d6a72a863df15700eddcbfb96`,

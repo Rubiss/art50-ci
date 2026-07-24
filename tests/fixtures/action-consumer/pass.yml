@@ -24,7 +24,7 @@ surfaces:
 
 provenance:
   - id: local-c2pa-delivery
-    name: Deterministic C2PA source-to-delivery fixture
+    name: Committed C2PA source-to-delivery fixture
     source: ./assets/c2pa-source.png
     delivered: ./assets/c2pa-delivered.png
     requireManifest: true

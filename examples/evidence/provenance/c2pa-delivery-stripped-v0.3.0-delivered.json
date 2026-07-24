@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "id": "public-test-card-stripped-delivered",
+  "target": "https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered-stripped.png",
+  "resolvedTarget": "https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered-stripped.png",
+  "sourceKind": "url",
+  "observedAt": "2026-07-24T14:22:00.745Z",
+  "mimeType": "image/png",
+  "bytes": 14735,
+  "sha256": "dadb42a86c03270ffc5cbd1c22d0aa7360fbf23befda8d13bb886925cd4ffcb5",
+  "evidencePath": "public-test-card-stripped-delivered-2026-07-24T14-22-00-745Z-7e8a411a.json",
+  "c2pa": {
+    "manifestPresent": false,
+    "embedded": null,
+    "activeLabel": null,
+    "manifestLabels": [],
+    "manifestAncestryLabels": [],
+    "validationState": null,
+    "validationStatuses": [],
+    "digitalSourceTypes": [],
+    "inspectionError": null
+  },
+  "resultMeaning": "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee."
+}

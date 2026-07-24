@@ -9,7 +9,7 @@ output:
 
 provenance:
   - id: local-c2pa-stripped-delivery
-    name: Deterministic manifest-stripped delivery fixture
+    name: Committed manifest-stripped delivery fixture
     source: ./assets/c2pa-source.png
     delivered: ./assets/c2pa-delivered-stripped.png
     requireManifest: true

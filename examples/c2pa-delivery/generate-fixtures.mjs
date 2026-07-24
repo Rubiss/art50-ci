@@ -66,6 +66,34 @@ function pngChunk(type, data) {
   return chunk;
 }
 
+function removePngChunk(png, chunkType) {
+  const signature = png.subarray(0, 8);
+  if (!signature.equals(Buffer.from("89504e470d0a1a0a", "hex"))) {
+    throw new Error("Expected a PNG signature.");
+  }
+  const retained = [signature];
+  let offset = 8;
+  let removed = 0;
+  while (offset < png.length) {
+    const length = png.readUInt32BE(offset);
+    const end = offset + 12 + length;
+    if (end > png.length) {
+      throw new Error("PNG chunk length exceeded the fixture bytes.");
+    }
+    const type = png.subarray(offset + 4, offset + 8).toString("ascii");
+    if (type === chunkType) {
+      removed += 1;
+    } else {
+      retained.push(png.subarray(offset, end));
+    }
+    offset = end;
+  }
+  if (removed !== 1) {
+    throw new Error(`Expected exactly one ${chunkType} chunk; removed ${removed}.`);
+  }
+  return Buffer.concat(retained);
+}
+
 function setPixel(pixels, x, y, [red, green, blue, alpha = 255]) {
   if (x < 0 || y < 0 || x >= width || y >= height) {
     return;
@@ -207,11 +235,20 @@ async function main() {
   if (!deliveryDestination.buffer) {
     throw new Error("C2PA delivery signing produced no bytes.");
   }
+  const strippedDelivery = removePngChunk(
+    deliveryDestination.buffer,
+    "caBX",
+  );
+  if (!strippedDelivery.equals(unsignedCard)) {
+    throw new Error(
+      "Removing the delivered C2PA chunk did not recover the unsigned fixture.",
+    );
+  }
 
   const assets = new Map([
     ["c2pa-source.png", sourceDestination.buffer],
     ["c2pa-delivered.png", deliveryDestination.buffer],
-    ["c2pa-delivered-stripped.png", unsignedCard],
+    ["c2pa-delivered-stripped.png", strippedDelivery],
   ]);
   await mkdir(assetDirectory, { recursive: true });
   await Promise.all(

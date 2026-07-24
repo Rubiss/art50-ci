@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 2,
+  "id": "public-test-card-stripped-source",
+  "target": "$CONFIG_DIR/assets/c2pa-source.png",
+  "resolvedTarget": "$CONFIG_DIR/assets/c2pa-source.png",
+  "sourceKind": "file",
+  "observedAt": "2026-07-24T14:21:58.853Z",
+  "mimeType": "image/png",
+  "bytes": 34242,
+  "sha256": "3d21ffe863fafa1920f21da5665058fc7b0ea4c263edf294422066f384242c6a",
+  "evidencePath": "public-test-card-stripped-source-2026-07-24T14-21-58-853Z-90dc8c43.json",
+  "c2pa": {
+    "manifestPresent": true,
+    "embedded": true,
+    "activeLabel": "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237",
+    "manifestLabels": [
+      "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+    ],
+    "manifestAncestryLabels": [
+      "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+    ],
+    "validationState": "Valid",
+    "validationStatuses": [
+      {
+        "code": "claimSignature.insideValidity",
+        "success": true,
+        "explanation": "claim signature valid"
+      },
+      {
+        "code": "claimSignature.validated",
+        "success": true,
+        "explanation": "claim signature valid"
+      },
+      {
+        "code": "assertion.hashedURI.match",
+        "success": true,
+        "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.hash.data"
+      },
+      {
+        "code": "assertion.hashedURI.match",
+        "success": true,
+        "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.thumbnail.claim"
+      },
+      {
+        "code": "assertion.hashedURI.match",
+        "success": true,
+        "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.actions.v2"
+      },
+      {
+        "code": "assertion.dataHash.match",
+        "success": true,
+        "explanation": "data hash valid"
+      }
+    ],
+    "digitalSourceTypes": [
+      "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
+    ],
+    "inspectionError": null
+  },
+  "resultMeaning": "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee."
+}

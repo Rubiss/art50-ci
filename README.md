@@ -32,6 +32,13 @@ For the governance-to-engineering handoff, read the
 It shows what the runner can observe, what remains a human decision, and how
 to promote one declared expectation into GitHub Actions.
 
+For C2PA delivery checks, inspect the
+[public source-to-delivery fixtures](examples/c2pa-delivery),
+[passing HTML report](examples/evidence/c2pa-delivery-v0.3.0.html), and
+[manifest-stripped expected failure](examples/evidence/c2pa-delivery-stripped-v0.3.0.html).
+They were generated with the exact v0.3.0 release and public, untrusted test
+signing material.
+
 For a repeatable GitHub check, add these two files. This exact example passes
 against the public art50-ci site; then replace the target, selector, and text
 with the disclosure your team selected.
@@ -120,7 +127,7 @@ Official starting points:
 | Interaction checkpoint | Configured control exists, is visible, and is enabled after the initial observation; the action is not performed |
 | Evidence | Page and screenshot SHA-256, timestamp, URL, viewport, and structured failures |
 | C2PA | Manifest presence, embedding, active label, validation state/statuses, and declared digital source type |
-| Delivery pipeline | Source active manifest label absent from the delivered manifest chain |
+| Delivery pipeline | Source active manifest label reachable through delivered ingredient ancestry |
 
 Every `PASS` has a deliberately narrow meaning: the configured technical
 condition was observed against the tested target at that time.
@@ -154,6 +161,12 @@ Inspect a real screenshot-free run against the production site:
 [rendered HTML report](https://art50-ci.rubiss89.chatgpt.site/evidence/production-site-v0.3.0.html),
 [portable JSON](examples/evidence/production-site-v0.3.0.json), and the
 [configuration that produced it](examples/live-site.yml).
+
+Inspect the released v0.3.0 C2PA proof:
+[passing HTML](examples/evidence/c2pa-delivery-v0.3.0.html),
+[passing JSON](examples/evidence/c2pa-delivery-v0.3.0.json),
+[expected-failure HTML](examples/evidence/c2pa-delivery-stripped-v0.3.0.html),
+and the [pinned configurations and test-only assets](examples/c2pa-delivery).
 
 After the npm package is published, the install command becomes:
 
@@ -234,18 +247,31 @@ provenance:
     requireEmbedded: true
     requireSourceManifestInDeliveredChain: true
     failOnInvalid: true
-    expectedDigitalSourceType: http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia
 ```
 
 Add stable attributes such as `data-ai-disclosure` rather than coupling tests
-to styling classes. Configure `expectedDigitalSourceType` with the complete
-C2PA/IPTC URI; comparison is exact and is evaluated independently against the
-active manifest of every configured source and delivered asset. It does not
-inherit a value from an earlier manifest in the chain. The source-to-delivery
-check starts at the delivered active manifest and recursively follows
-ingredient ancestry; an unlinked label merely present elsewhere in the
-manifest store does not satisfy it. The scope and expected controls remain
-your declarations.
+to styling classes. The source-to-delivery check starts at the delivered
+active manifest and recursively follows ingredient ancestry; an unlinked
+label merely present elsewhere in the manifest store does not satisfy it.
+
+Configure `expectedDigitalSourceType` with the complete C2PA/IPTC URI only
+when every asset in that provenance item must carry that value directly in
+its active manifest. Comparison is exact and is evaluated independently
+against every configured source and delivered asset; it does not inherit a
+value from an earlier manifest in the chain. For a source-only type check,
+use a separate item and explicitly disable chain comparison:
+
+```yaml
+  - id: launch-poster-source-type
+    source: ./assets/launch-poster.png
+    requireManifest: true
+    requireEmbedded: true
+    requireSourceManifestInDeliveredChain: false
+    failOnInvalid: true
+    expectedDigitalSourceType: http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia
+```
+
+The scope and expected controls remain your declarations.
 
 C2PA verification in this preview is deliberately local and offline. It
 verifies the manifest structure, hashes, and signatures after reading, but

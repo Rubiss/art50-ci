@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 2,
+  "tool": {
+    "name": "art50-ci",
+    "version": "0.3.0"
+  },
+  "runId": "2026-07-24T14-21-57-352Z-33c8618e",
+  "mode": "audit",
+  "project": "C2PA source-to-delivery public proof",
+  "configPath": "$CONFIG_DIR/pass.yml",
+  "configSha256": "63d385cd4a82278c882911fa9948cada264bfd6efea7318f0d27c3a8eaea9f8e",
+  "resultMeaning": "PASS means only that the configured technical condition was observed at the recorded time. It is not a legal compliance conclusion or certification.",
+  "environment": {
+    "node": "v24.15.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "commitSha": "07e31fd75166a8d3cf11d75ed5511de3c46d620d"
+  },
+  "startedAt": "2026-07-24T14:21:57.352Z",
+  "finishedAt": "2026-07-24T14:21:57.546Z",
+  "durationMs": 194,
+  "passed": true,
+  "summary": {
+    "totalSurfaces": 0,
+    "passedSurfaces": 0,
+    "failedSurfaces": 0,
+    "totalChecks": 0,
+    "passedChecks": 0,
+    "failedChecks": 0,
+    "totalProvenance": 1,
+    "passedProvenance": 1,
+    "failedProvenance": 0,
+    "totalFailures": 0
+  },
+  "surfaces": [],
+  "provenance": [
+    {
+      "provenanceId": "public-test-card-delivery",
+      "name": "Public test card from source to delivered bytes",
+      "source": {
+        "schemaVersion": 2,
+        "id": "public-test-card-delivery-source",
+        "target": "$CONFIG_DIR/assets/c2pa-source.png",
+        "resolvedTarget": "$CONFIG_DIR/assets/c2pa-source.png",
+        "sourceKind": "file",
+        "observedAt": "2026-07-24T14:21:57.356Z",
+        "mimeType": "image/png",
+        "bytes": 34242,
+        "sha256": "3d21ffe863fafa1920f21da5665058fc7b0ea4c263edf294422066f384242c6a",
+        "evidencePath": "provenance/public-test-card-delivery-source-2026-07-24T14-21-57-356Z-1201cd42.json",
+        "c2pa": {
+          "manifestPresent": true,
+          "embedded": true,
+          "activeLabel": "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237",
+          "manifestLabels": [
+            "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+          ],
+          "manifestAncestryLabels": [
+            "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+          ],
+          "validationState": "Valid",
+          "validationStatuses": [
+            {
+              "code": "claimSignature.insideValidity",
+              "success": true,
+              "explanation": "claim signature valid"
+            },
+            {
+              "code": "claimSignature.validated",
+              "success": true,
+              "explanation": "claim signature valid"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.hash.data"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.thumbnail.claim"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.actions.v2"
+            },
+            {
+              "code": "assertion.dataHash.match",
+              "success": true,
+              "explanation": "data hash valid"
+            }
+          ],
+          "digitalSourceTypes": [
+            "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
+          ],
+          "inspectionError": null
+        },
+        "resultMeaning": "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee."
+      },
+      "delivered": {
+        "schemaVersion": 2,
+        "id": "public-test-card-delivery-delivered",
+        "target": "https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered.png",
+        "resolvedTarget": "https://raw.githubusercontent.com/Rubiss/art50-ci/92afc09c1857164774e600456fdf30828cf951d7/examples/c2pa-delivery/assets/c2pa-delivered.png",
+        "sourceKind": "url",
+        "observedAt": "2026-07-24T14:21:57.535Z",
+        "mimeType": "image/png",
+        "bytes": 55450,
+        "sha256": "f5794782cd47ee08451c1dd0f589a05afee4dd29e853b50edc3c18c6249f07cf",
+        "evidencePath": "provenance/public-test-card-delivery-delivered-2026-07-24T14-21-57-535Z-38aff482.json",
+        "c2pa": {
+          "manifestPresent": true,
+          "embedded": true,
+          "activeLabel": "urn:c2pa:016d54b5-9e24-4de3-a80c-a298ec8f3a37",
+          "manifestLabels": [
+            "urn:c2pa:016d54b5-9e24-4de3-a80c-a298ec8f3a37",
+            "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+          ],
+          "manifestAncestryLabels": [
+            "urn:c2pa:016d54b5-9e24-4de3-a80c-a298ec8f3a37",
+            "urn:c2pa:f039c0ce-cda5-497d-bed7-cdf8d02e7237"
+          ],
+          "validationState": "Valid",
+          "validationStatuses": [
+            {
+              "code": "claimSignature.insideValidity",
+              "success": true,
+              "explanation": "claim signature valid"
+            },
+            {
+              "code": "claimSignature.validated",
+              "success": true,
+              "explanation": "claim signature valid"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.thumbnail.ingredient"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.ingredient.v3"
+            },
+            {
+              "code": "assertion.hashedURI.match",
+              "success": true,
+              "explanation": "hashed uri matched: self#jumbf=c2pa.assertions/c2pa.actions.v2"
+            }
+          ],
+          "digitalSourceTypes": [],
+          "inspectionError": null
+        },
+        "resultMeaning": "This is a technical observation of the inspected bytes. Manifest presence, absence, or validation state is not a legal compliance conclusion or an authenticity guarantee."
+      },
+      "requireManifest": true,
+      "requireEmbedded": true,
+      "requireSourceManifestInDeliveredChain": true,
+      "failOnInvalid": true,
+      "expectedDigitalSourceType": null,
+      "activeLabelPreserved": true,
+      "passed": true,
+      "failures": []
+    }
+  ]
+}
