@@ -74,10 +74,10 @@ npx art50-ci init
 npx art50-ci audit
 ```
 
-Until the npm package is published, install the repository version:
+Until the npm package is published, install the versioned GitHub release:
 
 ```bash
-npm install --save-dev github:Rubiss/art50-ci
+npm install --save-dev https://github.com/Rubiss/art50-ci/releases/download/v0.1.0/art50-ci-0.1.0.tgz
 npx playwright install chromium
 npx art50-ci init
 npx art50-ci audit
