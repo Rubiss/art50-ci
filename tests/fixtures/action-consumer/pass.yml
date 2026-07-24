@@ -21,3 +21,13 @@ surfaces:
         inViewport: true
         unobstructed: true
         accessible: true
+
+provenance:
+  - id: local-c2pa-delivery
+    name: Deterministic C2PA source-to-delivery fixture
+    source: ./assets/c2pa-source.png
+    delivered: ./assets/c2pa-delivered.png
+    requireManifest: true
+    requireEmbedded: true
+    requireSourceManifestInDeliveredChain: true
+    failOnInvalid: true

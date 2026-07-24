@@ -1,0 +1,18 @@
+version: 1
+
+project:
+  name: composite-action-stripped-c2pa-fixture
+
+output:
+  directory: artifacts/unused
+  screenshots: false
+
+provenance:
+  - id: local-c2pa-stripped-delivery
+    name: Deterministic manifest-stripped delivery fixture
+    source: ./assets/c2pa-source.png
+    delivered: ./assets/c2pa-delivered-stripped.png
+    requireManifest: true
+    requireEmbedded: true
+    requireSourceManifestInDeliveredChain: true
+    failOnInvalid: true

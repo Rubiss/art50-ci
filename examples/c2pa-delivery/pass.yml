@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../schema/art50-ci.schema.json
+version: 1
+
+project:
+  name: C2PA source-to-delivery public proof
+
+output:
+  directory: ../../.art50-ci/c2pa-delivery-pass
+  screenshots: false
+
+provenance:
+  - id: public-test-card-delivery
+    name: Public test card from source to delivered bytes
+    source: ./assets/c2pa-source.png
+    delivered: https://raw.githubusercontent.com/Rubiss/art50-ci/main/examples/c2pa-delivery/assets/c2pa-delivered.png
+    requireManifest: true
+    requireEmbedded: true
+    requireSourceManifestInDeliveredChain: true
+    failOnInvalid: true

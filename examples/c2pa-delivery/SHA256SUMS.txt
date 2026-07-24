@@ -1,0 +1,3 @@
+3d21ffe863fafa1920f21da5665058fc7b0ea4c263edf294422066f384242c6a  assets/c2pa-source.png
+f5794782cd47ee08451c1dd0f589a05afee4dd29e853b50edc3c18c6249f07cf  assets/c2pa-delivered.png
+dadb42a86c03270ffc5cbd1c22d0aa7360fbf23befda8d13bb886925cd4ffcb5  assets/c2pa-delivered-stripped.png

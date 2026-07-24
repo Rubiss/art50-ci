@@ -43,6 +43,7 @@
     "dev": "tsx src/cli.ts",
     "test": "vitest run",
     "check": "npm run build && npm test",
+    "fixtures:c2pa": "node examples/c2pa-delivery/generate-fixtures.mjs",
     "test:watch": "vitest",
     "prepare": "npm run build",
     "prepack": "npm run build"
