@@ -904,7 +904,8 @@ async function auditSurface(
       "screenshots",
     );
     const filename = `${safeFilename(surface.id)}-${runId}.png`;
-    screenshotPath = path.join(screenshotDirectory, filename);
+    const intendedScreenshotPath = path.join(screenshotDirectory, filename);
+    screenshotPath = intendedScreenshotPath;
     try {
       await mkdir(screenshotDirectory, { recursive: true });
       const masks: Locator[] = [];
@@ -914,7 +915,7 @@ async function auditSurface(
         masks.push(mask);
       }
       await page.screenshot({
-        path: screenshotPath,
+        path: intendedScreenshotPath,
         fullPage: true,
         mask: masks,
         maskColor: "#222222",
