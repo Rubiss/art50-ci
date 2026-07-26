@@ -22,3 +22,19 @@ npm pack --dry-run
 
 Never include customer credentials, private URLs, personal data, or sensitive
 evidence in an issue or fixture.
+
+## Publishing a release
+
+Before the first automated npm release, configure the `art50-ci` package on
+npmjs.com with a GitHub Actions trusted publisher for:
+
+- organization or user: `Rubiss`
+- repository: `art50-ci`
+- workflow filename: `publish-npm.yml`
+- allowed action: `npm publish`
+
+Then update `package.json` and `package-lock.json` to the intended version and
+publish a non-prerelease GitHub release whose tag is exactly `v<version>`. The
+release workflow verifies that tag, runs the full test and package checks, and
+publishes the package to npm using short-lived OIDC credentials. Prereleases
+are intentionally not published.

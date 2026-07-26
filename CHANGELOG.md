@@ -4,6 +4,9 @@
 
 ### Added
 
+- Trusted npm publishing that validates a published GitHub release tag against
+  `package.json`, runs the full release checks, and publishes the public package
+  with OIDC authentication and automatically generated provenance.
 - A browser obstruction demonstration, reproducible with the published v0.3.0
   CLI, that compares broken and fixed cookie-overlay fixtures and retains
   matching JSON, HTML, screenshots, and hashes.
