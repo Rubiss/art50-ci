@@ -26,7 +26,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12.0"
   },
   "bin": {
     "art50-ci": "dist/cli.js"
@@ -51,7 +51,7 @@
   "dependencies": {
     "@contentauth/c2pa-node": "^0.7.0",
     "@contentauth/c2pa-types": "^0.7.2",
-    "commander": "^14.0.0",
+    "commander": "^15.0.0",
     "playwright": "^1.54.1",
     "yaml": "^2.8.0",
     "zod": "^4.4.3"

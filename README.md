@@ -164,7 +164,7 @@ condition was observed against the tested target at that time.
 
 Requirements:
 
-- Node.js 22 or newer
+- Node.js 22.12.0 or newer
 - Chromium installed through Playwright for browser checks
 
 For a local run, install the published v0.3.0 package and check the art50-ci
