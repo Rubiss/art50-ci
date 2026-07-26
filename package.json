@@ -26,7 +26,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12.0"
   },
   "bin": {
     "art50-ci": "dist/cli.js"
