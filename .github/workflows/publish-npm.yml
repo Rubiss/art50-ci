@@ -30,6 +30,9 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
+      - name: Install an OIDC-capable npm CLI
+        run: npm install --global npm@11.12.1
+
       - name: Verify release tag matches package version
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
