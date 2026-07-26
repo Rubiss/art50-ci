@@ -1,6 +1,6 @@
 {
   "name": "art50-ci",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Regression-test declared AI disclosures and C2PA provenance in the delivered experience.",
   "type": "module",
   "license": "MIT",
@@ -61,5 +61,10 @@
     "tsx": "^4.20.3",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "@contentauth/c2pa-node": {
+      "unzipper": "0.12.5"
+    }
   }
 }

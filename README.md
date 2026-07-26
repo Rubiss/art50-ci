@@ -16,12 +16,12 @@ Article 50 and the Code of Practice do not require C2PA by name. This preview
 supports C2PA as one configurable metadata implementation; it does not provide
 complete Article 50(2) marking or detection coverage.
 
-> **Status:** `v0.3.0` technical preview. Configuration and report schemas may
+> **Status:** `v0.4.0` technical preview. Configuration and report schemas may
 > change before `v1.0`. Report and provenance evidence documents currently use
 > `schemaVersion: 2`; configuration remains `version: 1`.
 
 **Get started:** [GitHub Marketplace](https://github.com/marketplace/actions/art50-ci-ai-transparency-checks)
-· [npm CLI 0.3.0](https://www.npmjs.com/package/art50-ci/v/0.3.0)
+· [npm CLI 0.4.0](https://www.npmjs.com/package/art50-ci/v/0.4.0)
 · [30-second fail → fix → pass demo](https://art50-ci.rubiss89.chatgpt.site/demo)
 · [five-minute browser builder](https://art50-ci.rubiss89.chatgpt.site/#try)
 
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: Rubiss/art50-ci@v0.3.0
+      - uses: Rubiss/art50-ci@v0.4.0
         with:
           config: .art50-ci.yml
 ```
@@ -167,11 +167,11 @@ Requirements:
 - Node.js 22.12.0 or newer
 - Chromium installed through Playwright for browser checks
 
-For a local run, install the published v0.3.0 package and check the art50-ci
+For a local run, install the published v0.4.0 package and check the art50-ci
 production site:
 
 ```bash
-npm install --save-dev art50-ci@0.3.0
+npm install --save-dev art50-ci@0.4.0
 npx playwright install chromium
 npx art50-ci verify https://art50-ci.rubiss89.chatgpt.site --selector '[data-product-boundary]' --text 'No legal compliance verdicts.'
 ```
@@ -442,7 +442,7 @@ jobs:
           persist-credentials: false
 
       - name: Check delivered AI transparency controls
-        uses: Rubiss/art50-ci@v0.3.0
+        uses: Rubiss/art50-ci@v0.4.0
         with:
           config: .art50-ci.yml
           output: artifacts/art50

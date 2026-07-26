@@ -260,7 +260,7 @@ surfaces:
         project: "published-cli-browser-failure-matrix",
         tool: {
           name: "art50-ci",
-          version: "0.3.0",
+          version: "0.4.0",
         },
         summary: {
           totalSurfaces: 12,

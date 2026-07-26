@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 — 2026-07-26
+
 ### Added
 
 - Trusted npm publishing that validates a published GitHub release tag against
@@ -15,6 +17,14 @@
 - A clean-repository adoption workflow that installs the published npm package,
   configures one declared check, runs it, validates its evidence, and enforces
   a ten-minute ceiling.
+
+### Changed
+
+- Updated the C2PA runtime, Commander, Zod, TypeScript, and Vitest dependency
+  lines and raised the supported Node.js floor to 22.12.0.
+- Overrode the C2PA runtime's legacy archive dependency with `unzipper@0.12.5`,
+  removing the vulnerable `fstream`, `rimraf`, `glob`, `minimatch`, and
+  `brace-expansion` transitive chain.
 
 ## 0.3.0 — 2026-07-24
 
