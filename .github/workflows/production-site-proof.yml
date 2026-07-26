@@ -38,6 +38,7 @@ jobs:
           retention-days: "1"
 
       - name: Verify the retained production evidence
+        if: ${{ always() }}
         shell: bash
         env:
           REPORT_DIRECTORY: ${{ steps.proof.outputs.report-directory }}
