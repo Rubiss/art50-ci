@@ -22,7 +22,7 @@ Inspect the committed evidence:
 
 ## Reproduce
 
-From the repository root with Node.js 22 or later:
+From the repository root with Node.js 22.12.0 or later:
 
 ```sh
 npm install --no-save art50-ci@0.3.0
