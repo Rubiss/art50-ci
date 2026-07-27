@@ -27,13 +27,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run the released v0.3.0 Action
+      - name: Run the released v0.4.0 Action
         id: proof
-        uses: Rubiss/art50-ci@v0.3.0
+        uses: Rubiss/art50-ci@v0.4.0
         with:
           config: examples/c2pa-delivery/pass.yml
           output: artifacts/c2pa-delivery-pass
-          artifact-name: c2pa-delivery-pass-v0.3.0
+          artifact-name: c2pa-delivery-pass-v0.4.0
           retention-days: "90"
           install-browser: "false"
 
@@ -56,7 +56,7 @@ jobs:
           const delivered = provenance?.delivered;
           if (
             report.schemaVersion !== 2 ||
-            report.tool?.version !== "0.3.0" ||
+            report.tool?.version !== "0.4.0" ||
             report.passed !== true ||
             report.summary?.passedProvenance !== 1 ||
             provenance?.passed !== true ||
@@ -86,14 +86,14 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run the expected-failure control through v0.3.0
+      - name: Run the expected-failure control through v0.4.0
         id: proof
         continue-on-error: true
-        uses: Rubiss/art50-ci@v0.3.0
+        uses: Rubiss/art50-ci@v0.4.0
         with:
           config: examples/c2pa-delivery/stripped-fail.yml
           output: artifacts/c2pa-delivery-stripped
-          artifact-name: c2pa-delivery-stripped-v0.3.0
+          artifact-name: c2pa-delivery-stripped-v0.4.0
           retention-days: "90"
           install-browser: "false"
 
@@ -121,7 +121,7 @@ jobs:
           const failures = provenance?.failures ?? [];
           if (
             report.schemaVersion !== 2 ||
-            report.tool?.version !== "0.3.0" ||
+            report.tool?.version !== "0.4.0" ||
             report.passed !== false ||
             report.summary?.totalFailures !== 2 ||
             provenance?.activeLabelPreserved !== null ||

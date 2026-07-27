@@ -28,13 +28,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Run the released v0.3.0 Action
+      - name: Run the released v0.4.0 Action
         id: proof
-        uses: Rubiss/art50-ci@v0.3.0
+        uses: Rubiss/art50-ci@v0.4.0
         with:
           config: examples/live-site.yml
           output: artifacts/production-site
-          artifact-name: production-site-v0.3.0
+          artifact-name: production-site-v0.4.0
           retention-days: "1"
 
       - name: Verify the retained production evidence
@@ -58,7 +58,7 @@ jobs:
           const check = surface?.checks?.[0];
           if (
             report.schemaVersion !== 2 ||
-            report.tool?.version !== "0.3.0" ||
+            report.tool?.version !== "0.4.0" ||
             report.passed !== true ||
             report.summary?.totalSurfaces !== 1 ||
             report.summary?.passedSurfaces !== 1 ||

@@ -27,7 +27,7 @@ jobs:
           test ! -e package-lock.json
           git init --quiet
           npm init --yes
-          npm install --save-dev art50-ci@0.3.0
+          npm install --save-dev art50-ci@0.4.0
           npx --no-install playwright install --with-deps chromium
 
           cat > disclosure.html <<'HTML'
@@ -91,7 +91,7 @@ jobs:
           if (
             report.schemaVersion !== 2 ||
             report.tool?.name !== "art50-ci" ||
-            report.tool?.version !== "0.3.0" ||
+            report.tool?.version !== "0.4.0" ||
             report.passed !== true ||
             report.summary?.totalSurfaces !== 1 ||
             report.summary?.passedSurfaces !== 1 ||
@@ -118,16 +118,17 @@ jobs:
           {
             echo "## Published CLI clean-repository adoption"
             echo
-            echo "- Package: \`art50-ci@0.3.0\` from npm"
+            echo "- Package: \`art50-ci@0.4.0\` from npm"
             echo "- Result: PASS"
             echo "- Install, Chromium setup, configuration, run, and evidence: ${ELAPSED_SECONDS} seconds"
             echo "- Threshold: under 600 seconds"
+            echo "- npm audit limitation: npm does not propagate dependency-package overrides, so consumers can still see four high-severity findings in the @contentauth/c2pa-node install-time unzipper@0.10.14 dependency chain; the tagged Action and repository lockfile use unzipper@0.12.5."
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload adoption evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: npm-cli-clean-adoption-v0.3.0
+          name: npm-cli-clean-adoption-v0.4.0
           path: consumer/.art50-ci/reports
           if-no-files-found: error
           retention-days: 1
