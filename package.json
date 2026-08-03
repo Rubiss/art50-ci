@@ -49,7 +49,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@contentauth/c2pa-node": "^0.7.0",
+    "@contentauth/c2pa-node": "^0.8.0",
     "@contentauth/c2pa-types": "^0.7.2",
     "commander": "^15.0.0",
     "playwright": "^1.54.1",
