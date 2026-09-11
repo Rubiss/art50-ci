@@ -60,7 +60,7 @@
     "@types/node": "^25.9.5",
     "tsx": "^4.20.3",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   },
   "overrides": {
     "@contentauth/c2pa-node": {
